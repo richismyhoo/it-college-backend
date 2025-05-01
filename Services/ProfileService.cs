@@ -14,11 +14,23 @@ public class ProfileService : IProfileService
         _context = context;
     }
 
-    public async Task<Profile> GetProfile(string username)
+    public async Task<ProfileDto> GetProfile(string username)
     {
-        var user = await _context.Profiles.FirstOrDefaultAsync(p => p.Username == username);
+        var userProfile = await _context.Profiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Username == username);
         
-        return user ?? new Profile();
+        var user = await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Username == username);
+
+        var profile = new ProfileDto
+        {
+            Profile = userProfile,
+            Role = user.Role,
+        };
+
+        return profile;
     }
 
     public async Task<Profile> CreateProfile(ProfileRequest request, string username)

@@ -4,7 +4,7 @@ namespace ItCollege.Interfaces;
 
 public interface IProfileService
 {
-    Task<Profile> GetProfile(string username);
+    Task<ProfileDto> GetProfile(string username);
     Task<Profile> CreateProfile(ProfileRequest profile, string username);
     Task UpdateProfile(Profile profile);
 }
